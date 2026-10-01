@@ -17,7 +17,6 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
 
 const formSchema = z.object({
@@ -37,7 +36,9 @@ const formSchema = z.object({
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { toast } = useToast();
+  // Success/Error message
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState<'success' | 'error' | ''>('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +52,10 @@ export function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
+
+    // Remove previous message
+    setStatusMessage('');
+    setStatusType('');
 
     try {
       const response = await fetch('/api/contact', {
@@ -66,33 +71,27 @@ export function ContactForm() {
       const data = await response.json();
 
       if (response.ok) {
-        // SUCCESS MESSAGE
-        toast({
-          title: 'Success!',
-          description: 'Your message was successfully sent.',
-        });
+        // SUCCESS
+        setStatusType('success');
+        setStatusMessage('Your message was successfully sent.');
 
         // Clear form
         form.reset();
       } else {
-        // ERROR MESSAGE
-        toast({
-          title: 'Failed!',
-          description:
-            data.error ||
-            data.message ||
-            'Your message could not be sent. Please try again.',
-          variant: 'destructive',
-        });
+        // ERROR
+        setStatusType('error');
+        setStatusMessage(
+          data.error || 'Your message could not be sent.'
+        );
       }
     } catch (error) {
-      // NETWORK / SERVER ERROR
-      toast({
-        title: 'Error!',
-        description:
-          'Your message could not be sent. Please try again later.',
-        variant: 'destructive',
-      });
+      // SERVER / NETWORK ERROR
+      console.error(error);
+
+      setStatusType('error');
+      setStatusMessage(
+        'Your message could not be sent. Please try again later.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +113,6 @@ export function ContactForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4"
         >
-
           {/* NAME */}
           <FormField
             control={form.control}
@@ -179,7 +177,20 @@ export function ContactForm() {
             )}
           />
 
-          {/* SUBMIT BUTTON */}
+          {/* SUCCESS / ERROR MESSAGE */}
+          {statusMessage && (
+            <div
+              className={`rounded-lg p-3 text-center text-sm font-medium ${
+                statusType === 'success'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700'
+              }`}
+            >
+              {statusMessage}
+            </div>
+          )}
+
+          {/* BUTTON */}
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -187,10 +198,8 @@ export function ContactForm() {
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </Button>
-
         </form>
       </Form>
     </motion.div>
   );
 }
-
