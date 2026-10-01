@@ -6,6 +6,10 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'Priyanshu Patel - Mechanical Engineer Portfolio',
   description: 'Professional portfolio of Priyanshu Patel, Mechanical Engineer',
+
+  icons: {
+    icon: '/priyanshu1.jpeg',
+  },
 }
 
 export default function RootLayout({
@@ -15,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   )
 }

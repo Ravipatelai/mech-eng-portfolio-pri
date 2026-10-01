@@ -105,7 +105,7 @@ const socialLinks: SocialLink[] = [
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
                 <img
-                  src="/images/sagar.jpeg?height=200&width=200"
+                  src="/images/priyanshu.jpeg?height=200&width=200"
                   alt="Priyanshu Patel"
                   className="rounded-full border-4 border-primary-foreground"
                   width={200}
