@@ -73,7 +73,7 @@ Open your browser and go to `http://localhost:3000` to view the portfolio.
 
 Feel free to reach out for any inquiries, collaboration opportunities, or discussions on Mechanical Engineering projects!
 
-- Email: layek@tuta.io
+- Email: [rkpg6331@gmail.com](mailto:rkpg6331@gmail.com)
 - LinkedIn: [ravikantkumarai](https://www.linkedin.com/in/ravikantkumarai)
 - GitHub: [Ravipatelai](https://github.com/Ravipatelai/)
 
