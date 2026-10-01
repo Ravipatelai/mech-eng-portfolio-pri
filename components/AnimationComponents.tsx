@@ -54,84 +54,149 @@ export const LiveBackground = () => {
 }
 
 export const LoadingSpinner = () => {
-  const gearOneControls = useAnimation()
-  const gearTwoControls = useAnimation()
-  const gearThreeControls = useAnimation()
-  const pistonControls = useAnimation()
-
-  useEffect(() => {
-    gearOneControls.start({
-      rotate: 360,
-      transition: { duration: 4, ease: "linear", repeat: Infinity },
-    })
-    gearTwoControls.start({
-      rotate: -360,
-      transition: { duration: 4, ease: "linear", repeat: Infinity },
-    })
-    gearThreeControls.start({
-      rotate: 360,
-      transition: { duration: 4, ease: "linear", repeat: Infinity },
-    })
-    pistonControls.start({
-      y: [0, 20, 0],
-      transition: { duration: 2, ease: "easeInOut", repeat: Infinity },
-    })
-  }, [gearOneControls, gearTwoControls, gearThreeControls, pistonControls])
+  const stars = [
+    { x: "10%", y: "20%", size: 2, delay: 0 },
+    { x: "20%", y: "70%", size: 3, delay: 0.5 },
+    { x: "30%", y: "35%", size: 2, delay: 1 },
+    { x: "42%", y: "15%", size: 3, delay: 1.5 },
+    { x: "55%", y: "75%", size: 2, delay: 0.3 },
+    { x: "68%", y: "25%", size: 3, delay: 0.8 },
+    { x: "78%", y: "60%", size: 2, delay: 1.2 },
+    { x: "88%", y: "18%", size: 3, delay: 0.4 },
+    { x: "92%", y: "78%", size: 2, delay: 1.7 },
+    { x: "15%", y: "45%", size: 2, delay: 1.1 },
+    { x: "75%", y: "40%", size: 2, delay: 0.7 },
+    { x: "50%", y: "45%", size: 2, delay: 1.4 },
+  ]
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-      <div className="relative w-64 h-64">
-        <motion.svg
-          className="absolute top-0 left-0"
-          width="120"
-          height="120"
-          viewBox="0 0 120 120"
-          animate={gearOneControls}
-        >
-          <path
-            d="M60,10 L65,0 L75,0 L80,10 L90,5 L100,15 L95,25 L105,30 L105,40 L95,45 L100,55 L90,65 L80,60 L75,70 L65,70 L60,60 L50,65 L40,55 L45,45 L35,40 L35,30 L45,25 L40,15 L50,5 L60,10 Z"
-            fill="#4A5568"
-          />
-          <circle cx="60" cy="35" r="25" fill="#2D3748" />
-        </motion.svg>
-        <motion.svg
-          className="absolute bottom-0 right-0"
-          width="100"
-          height="100"
-          viewBox="0 0 100 100"
-          animate={gearTwoControls}
-        >
-          <path
-            d="M50,8 L54,0 L62,0 L66,8 L74,4 L82,12 L78,20 L86,24 L86,32 L78,36 L82,44 L74,52 L66,48 L62,56 L54,56 L50,48 L42,52 L34,44 L38,36 L30,32 L30,24 L38,20 L34,12 L42,4 L50,8 Z"
-            fill="#718096"
-          />
-          <circle cx="50" cy="28" r="20" fill="#4A5568" />
-        </motion.svg>
-        <motion.svg
-          className="absolute top-0 right-0"
-          width="80"
-          height="80"
-          viewBox="0 0 80 80"
-          animate={gearThreeControls}
-        >
-          <path
-            d="M40,6 L43,0 L49,0 L52,6 L58,3 L64,9 L61,15 L67,18 L67,24 L61,27 L64,33 L58,39 L52,36 L49,42 L43,42 L40,36 L34,39 L28,33 L31,27 L25,24 L25,18 L31,15 L28,9 L34,3 L40,6 Z"
-            fill="#A0AEC0"
-          />
-          <circle cx="40" cy="21" r="15" fill="#718096" />
-        </motion.svg>
-        <motion.svg
-          className="absolute left-1/2 bottom-0"
-          width="40"
-          height="80"
-          viewBox="0 0 40 80"
-          animate={pistonControls}
-        >
-          <rect x="10" y="0" width="20" height="60" fill="#2D3748" />
-          <circle cx="20" cy="70" r="10" fill="#4A5568" />
-        </motion.svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white text-xl font-bold"></span>
+    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950">
+      {/* Background glow */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/10 blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Stars */}
+      {stars.map((star, index) => (
+        <motion.div
+          key={index}
+          className="absolute rounded-full bg-white"
+          style={{
+            left: star.x,
+            top: star.y,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+          }}
+          animate={{
+            opacity: [0.2, 1, 0.2],
+            scale: [0.7, 1.4, 0.7],
+          }}
+          transition={{
+            duration: 2,
+            delay: star.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Main loader */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative flex flex-col items-center">
+
+          {/* Moon */}
+          <motion.div
+            className="relative h-28 w-28"
+            animate={{
+              y: [0, -8, 0],
+              rotate: [-3, 3, -3],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            {/* Moon */}
+            <div className="absolute left-4 top-2 h-24 w-24 rounded-full bg-gradient-to-br from-white via-slate-200 to-slate-400 shadow-[0_0_50px_rgba(255,255,255,0.25)]" />
+
+            {/* Moon cutout */}
+            <div className="absolute left-10 top-0 h-24 w-24 rounded-full bg-slate-950" />
+
+            {/* Moon craters */}
+            <div className="absolute left-8 top-14 h-3 w-3 rounded-full bg-slate-300/60" />
+            <div className="absolute left-16 top-20 h-2 w-2 rounded-full bg-slate-300/50" />
+            <div className="absolute left-14 top-7 h-2 w-2 rounded-full bg-slate-400/50" />
+          </motion.div>
+
+          {/* Small orbiting star */}
+          <motion.div
+            className="absolute left-0 top-3 text-yellow-200"
+            animate={{
+              rotate: 360,
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            <motion.span
+              className="text-2xl"
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+              }}
+            >
+              ✦
+            </motion.span>
+          </motion.div>
+
+          {/* Loading text */}
+          <motion.div
+            className="mt-8 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-xl font-semibold tracking-[0.3em] text-white">
+              LOADING
+            </h2>
+
+            <motion.div
+              className="mt-3 flex justify-center gap-1"
+            >
+              {[0, 1, 2].map((dot) => (
+                <motion.span
+                  key={dot}
+                  className="h-1.5 w-1.5 rounded-full bg-white"
+                  animate={{
+                    opacity: [0.2, 1, 0.2],
+                    y: [0, -4, 0],
+                  }}
+                  transition={{
+                    duration: 1,
+                    delay: dot * 0.2,
+                    repeat: Infinity,
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+
         </div>
       </div>
     </div>
